@@ -387,3 +387,8 @@ html, body {
     font-size: 14px;
 }
 
+.gatherer-gather-elo {
+    opacity: 0.8;
+    margin-right: 25px;
+}
+

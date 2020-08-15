@@ -77,7 +77,6 @@ module.exports = app => {
     });
     
     app.post("/gather-ended", (request, response) => {
-        console.log(request.body);
         gatherElo.updateElo(request.body);
         response.status(200).json({
             message: "data received from *server id*",

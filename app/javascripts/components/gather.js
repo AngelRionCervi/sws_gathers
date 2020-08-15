@@ -956,6 +956,7 @@ const GathererListItem = React.createClass({
 					<h4 className="panel-title">
 						{country} <span className={onlineStatus}>{gatherer.user.username}</span> 
 						<span className="pull-right">
+                            <span className="gatherer-gather-elo">450</span>
 							<a href="#" className="btn btn-xs btn-primary add-right"
 								onClick={this.toggleCollapse}>
 								Info {this.caret()}</a>
