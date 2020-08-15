@@ -6,10 +6,13 @@ const config = require("./config.js");
 const GatherPool = require("../lib/gather/gather_pool");
 const mongoose = require("mongoose");
 const Message = mongoose.model("Message");
+const gatherElo = require("../lib/ensl/gatherElo.js");
 const cors = require("cors");
+const bodyParser = require('body-parser');
 
 module.exports = app => {
-	app.use(cors());
+    app.use(cors());
+    app.use(bodyParser.json());
 
 	app.get("/", (request, response, next) => {
 		response.render("gather.hbs", {
@@ -71,7 +74,15 @@ module.exports = app => {
 
 	app.get("*", (request, response) => {
 		response.status(404).render("404.hbs");
-	});
+    });
+    
+    app.post("/gather-ended", (request, response) => {
+        console.log(request.body);
+        gatherElo.updateElo(request.body);
+        response.status(200).json({
+            message: "data received from *server id*",
+        });
+    });
 
 	app.use(function (error, request, response, next) {
 		winston.error(error);

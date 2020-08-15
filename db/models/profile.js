@@ -1,6 +1,7 @@
 "use strict";
 
 var mongoose = require("mongoose");
+const { result } = require("lodash");
 var Schema = mongoose.Schema;
 
 var profileSchema = new Schema({
@@ -15,7 +16,8 @@ var profileSchema = new Schema({
 	},
 	enslo: { type: Number, default: null },
 	division: { type: String, default: null },
-	skill: { type: String, default: null },
+    skill: { type: String, default: null },
+    gatherElo: { type: Number, default: 0 },
 	gatherMusic: { type: String, default: null }
 });
 
@@ -33,14 +35,26 @@ profileSchema.static({
 				return callback(null, result);
 			});
 		});
-	}
+    },
+    async findOrCreatePromise(user) {
+        if (!user || typeof user.id !== 'number') return new Error("Invalid user");
+        try {
+            const profile = await this.findOne({userId: user.id});
+            if (profile) return profile;
+            const create = await this.create({userId: user.id});
+            return create;
+        } catch(err) {
+            return err;
+        }
+    }
 });
 
 profileSchema.method({
 	toJson: function () {
 		let output = {};
 		output.abilities = this.abilities;
-		output.skill = this.skill;
+        output.skill = this.skill;
+        output.gatherElo = this.gatherElo;
 		return output;
 	}
 });
